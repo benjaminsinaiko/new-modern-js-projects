@@ -14,14 +14,17 @@ const fetchData = async searchTerm => {
   return response.data.Search;
 };
 
+const imgPlaceholder = 'https://via.placeholder.com/35x50/87c5f8/FFFFFF?text=⊗';
+
 createAutoComplete({
-  root: document.querySelector('.autocomplete')
-});
-createAutoComplete({
-  root: document.querySelector('.autocomplete-2')
-});
-createAutoComplete({
-  root: document.querySelector('.autocomplete-3')
+  root: document.querySelector('.autocomplete'),
+  renderOption(movie) {
+    const imgSrc = movie.Poster === 'N/A' ? imgPlaceholder : movie.Poster;
+    return `
+      <img src="${imgSrc}" />
+      ${movie.Title} (${movie.Year})
+    `;
+  }
 });
 
 const onMovieSelect = async movie => {
