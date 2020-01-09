@@ -2,7 +2,8 @@ const fetchData = async searchTerm => {
   const response = await axios.get('http://www.omdbapi.com/', {
     params: {
       apikey: keys.OMDB_KEY,
-      s: searchTerm
+      s: searchTerm,
+      type: 'movie'
     }
   });
 
@@ -13,65 +14,22 @@ const fetchData = async searchTerm => {
   return response.data.Search;
 };
 
-const root = document.querySelector('.autocomplete');
-root.innerHTML = `
-  <label><b>Search For a Movie</b></label>
-  <input type="text" class="input" />
-  <div class="dropdown">
-    <div class="dropdown-menu">
-      <div class="dropdown-content results"></div>
-    </div>
-  </div>
-`;
-
-const input = document.querySelector('input');
-const dropdown = document.querySelector('.dropdown');
-const resultsWrapper = document.querySelector('.results');
-const imgPlaceholder = 'https://via.placeholder.com/35x50/87c5f8/FFFFFF?text=⊗';
-
-const onInput = async event => {
-  const movies = await fetchData(event.target.value);
-  console.log(movies);
-
-  if (!movies.length) {
-    dropdown.classList.remove('is-active');
-    return;
-  }
-
-  resultsWrapper.innerHTML = '';
-  dropdown.classList.add('is-active');
-  for (let movie of movies) {
-    const option = document.createElement('a');
-    const imgSrc = movie.Poster === 'N/A' ? imgPlaceholder : movie.Poster;
-
-    option.classList.add('dropdown-item');
-    option.innerHTML = `
-      <img src="${imgSrc}" />
-      ${movie.Title} (${movie.Year})
-    `;
-    option.addEventListener('click', () => {
-      dropdown.classList.remove('is-active');
-      input.value = movie.Title;
-      onMovieSelect(movie);
-    });
-
-    resultsWrapper.appendChild(option);
-  }
-};
-
-input.addEventListener('input', debounce(onInput, 500));
-
-document.addEventListener('click', event => {
-  if (!root.contains(event.target)) {
-    dropdown.classList.remove('is-active');
-  }
+createAutoComplete({
+  root: document.querySelector('.autocomplete')
+});
+createAutoComplete({
+  root: document.querySelector('.autocomplete-2')
+});
+createAutoComplete({
+  root: document.querySelector('.autocomplete-3')
 });
 
 const onMovieSelect = async movie => {
   const response = await axios.get('http://www.omdbapi.com/', {
     params: {
       apikey: keys.OMDB_KEY,
-      i: movie.imdbID
+      i: movie.imdbID,
+      type: 'movie'
     }
   });
   document.querySelector('#summary').innerHTML = movieTemplate(response.data);
