@@ -27,20 +27,25 @@ root.innerHTML = `
 const input = document.querySelector('input');
 const dropdown = document.querySelector('.dropdown');
 const resultsWrapper = document.querySelector('.results');
+const imgPlaceholder = 'https://via.placeholder.com/35x50/87c5f8/FFFFFF?text=⊗';
 
 const onInput = async event => {
   const movies = await fetchData(event.target.value);
   console.log(movies);
 
+  resultsWrapper.innerHTML = '';
+  dropdown.classList.add('is-active');
   for (let movie of movies) {
-    const div = document.createElement('div');
+    const option = document.createElement('a');
+    const imgSrc = movie.Poster === 'N/A' ? imgPlaceholder : movie.Poster;
 
-    div.innerHTML = `
-      <img src="${movie.Poster}" />
-      <h1>${movie.Title} (${movie.Year})</h1>
+    option.classList.add('dropdown-item');
+    option.innerHTML = `
+      <img src="${imgSrc}" />
+      ${movie.Title} (${movie.Year})
     `;
 
-    document.querySelector('#target').appendChild(div);
+    resultsWrapper.appendChild(option);
   }
 };
 
