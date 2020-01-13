@@ -1,12 +1,13 @@
-const { Engine, Render, Runner, World, Body, Bodies } = Matter;
+const { Engine, Render, Runner, World, Body, Bodies, Events } = Matter;
 
-const CELLS = 6;
+const CELLS = 3;
 const WIDTH = 600;
 const HEIGHT = 600;
 const UNIT_LENGTH = WIDTH / CELLS;
 const BORDER_THICKNESS = 2;
 
 const engine = Engine.create();
+engine.world.gravity.y = 0;
 const { world } = engine;
 const render = Render.create({
   element: document.body,
@@ -117,6 +118,7 @@ horizontals.forEach((row, rowIndex) => {
       UNIT_LENGTH,
       10,
       {
+        label: 'wall',
         isStatic: true
       }
     );
@@ -134,7 +136,7 @@ verticals.forEach((row, rowIndex) => {
       rowIndex * UNIT_LENGTH + UNIT_LENGTH / 2,
       10,
       UNIT_LENGTH,
-      { isStatic: true }
+      { label: 'wall', isStatic: true }
     );
     World.add(world, wall);
   });
@@ -146,12 +148,12 @@ const goal = Bodies.rectangle(
   HEIGHT - UNIT_LENGTH / 2,
   UNIT_LENGTH * 0.7,
   UNIT_LENGTH * 0.7,
-  { isStatic: true }
+  { label: 'goal', isStatic: true }
 );
 World.add(world, goal);
 
 // Ball
-const ball = Bodies.circle(UNIT_LENGTH / 2, UNIT_LENGTH / 2, UNIT_LENGTH / 4);
+const ball = Bodies.circle(UNIT_LENGTH / 2, UNIT_LENGTH / 2, UNIT_LENGTH / 4, { label: 'ball' });
 World.add(world, ball);
 
 document.addEventListener('keydown', event => {
@@ -173,4 +175,20 @@ document.addEventListener('keydown', event => {
   if (event.which === 83 || event.which === 40) {
     Body.setVelocity(ball, { x, y: y + 5 });
   }
+});
+
+// Win condition
+Events.on(engine, 'collisionStart', event => {
+  event.pairs.forEach(collision => {
+    const labels = ['ball', 'goal'];
+
+    if (labels.includes(collision.bodyA.label) && labels.includes(collision.bodyB.label)) {
+      world.gravity.y = 1;
+      world.bodies.forEach(body => {
+        if (body.label === 'wall') {
+          Body.setStatic(body, false);
+        }
+      });
+    }
+  });
 });
