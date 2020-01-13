@@ -1,9 +1,10 @@
 const { Engine, Render, Runner, World, Bodies } = Matter;
 
-const CELLS = 5;
+const CELLS = 6;
 const WIDTH = 600;
 const HEIGHT = 600;
 const UNIT_LENGTH = WIDTH / CELLS;
+const BORDER_THICKNESS = 2;
 
 const engine = Engine.create();
 const { world } = engine;
@@ -20,10 +21,10 @@ Runner.run(Runner.create(), engine);
 
 // Walls
 const walls = [
-  Bodies.rectangle(WIDTH / 2, 0, WIDTH, 40, { isStatic: true }),
-  Bodies.rectangle(WIDTH / 2, HEIGHT, WIDTH, 40, { isStatic: true }),
-  Bodies.rectangle(0, HEIGHT / 2, 40, HEIGHT, { isStatic: true }),
-  Bodies.rectangle(WIDTH, HEIGHT / 2, 40, HEIGHT, { isStatic: true })
+  Bodies.rectangle(WIDTH / 2, 0, WIDTH, BORDER_THICKNESS, { isStatic: true }),
+  Bodies.rectangle(WIDTH / 2, HEIGHT, WIDTH, BORDER_THICKNESS, { isStatic: true }),
+  Bodies.rectangle(0, HEIGHT / 2, BORDER_THICKNESS, HEIGHT, { isStatic: true }),
+  Bodies.rectangle(WIDTH, HEIGHT / 2, BORDER_THICKNESS, HEIGHT, { isStatic: true })
 ];
 World.add(world, walls);
 
@@ -133,13 +134,20 @@ verticals.forEach((row, rowIndex) => {
       rowIndex * UNIT_LENGTH + UNIT_LENGTH / 2,
       10,
       UNIT_LENGTH,
-      {
-        isStatic: true
-      }
+      { isStatic: true }
     );
     World.add(world, wall);
   });
 });
+
+const goal = Bodies.rectangle(
+  WIDTH - UNIT_LENGTH / 2,
+  HEIGHT - UNIT_LENGTH / 2,
+  UNIT_LENGTH * 0.7,
+  UNIT_LENGTH * 0.7,
+  { isStatic: true }
+);
+World.add(world, goal);
 
 // console.group('GRID');
 // console.table(grid);
