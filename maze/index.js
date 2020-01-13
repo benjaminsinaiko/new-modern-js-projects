@@ -1,6 +1,6 @@
 const { Engine, Render, Runner, World, Bodies } = Matter;
 
-const CELLS = 3;
+const CELLS = 5;
 const WIDTH = 600;
 const HEIGHT = 600;
 const UNIT_LENGTH = WIDTH / CELLS;
@@ -123,13 +123,31 @@ horizontals.forEach((row, rowIndex) => {
   });
 });
 
+verticals.forEach((row, rowIndex) => {
+  row.forEach((open, columnIndex) => {
+    if (open) {
+      return;
+    }
+    const wall = Bodies.rectangle(
+      columnIndex * UNIT_LENGTH + UNIT_LENGTH,
+      rowIndex * UNIT_LENGTH + UNIT_LENGTH / 2,
+      10,
+      UNIT_LENGTH,
+      {
+        isStatic: true
+      }
+    );
+    World.add(world, wall);
+  });
+});
+
 // console.group('GRID');
 // console.table(grid);
 // console.groupEnd('GRID');
 
-// console.group('VERTICALS');
-// console.table(verticals);
-// console.groupEnd('VERTICALS');
+console.group('VERTICALS');
+console.table(verticals);
+console.groupEnd('VERTICALS');
 
 console.group('HORIZONTALS');
 console.table(horizontals);
