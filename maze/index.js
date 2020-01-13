@@ -140,6 +140,7 @@ verticals.forEach((row, rowIndex) => {
   });
 });
 
+// Goal
 const goal = Bodies.rectangle(
   WIDTH - UNIT_LENGTH / 2,
   HEIGHT - UNIT_LENGTH / 2,
@@ -148,6 +149,10 @@ const goal = Bodies.rectangle(
   { isStatic: true }
 );
 World.add(world, goal);
+
+// Ball
+const ball = Bodies.circle(UNIT_LENGTH / 2, UNIT_LENGTH / 2, UNIT_LENGTH / 4);
+World.add(world, ball);
 
 // console.group('GRID');
 // console.table(grid);
