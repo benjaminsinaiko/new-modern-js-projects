@@ -3,6 +3,7 @@ const { Engine, Render, Runner, World, Bodies } = Matter;
 const CELLS = 3;
 const WIDTH = 600;
 const HEIGHT = 600;
+const UNIT_LENGTH = WIDTH / CELLS;
 
 const engine = Engine.create();
 const { world } = engine;
@@ -34,10 +35,6 @@ const shuffle = arr => {
     const index = Math.floor(Math.random() * counter);
 
     counter--;
-
-    // const temp = arr[counter];
-    // arr[counter] = arr[index];
-    // arr[index] = temp;
 
     [arr[counter], arr[index]] = [arr[index], arr[counter]];
   }
@@ -75,7 +72,6 @@ const stepThroughCell = (row, column) => {
     [row + 1, column, 'down'],
     [row, column - 1, 'left']
   ]);
-  // console.table(neighbors);
 
   // For each neighbor...
   for (let neighbor of neighbors) {
@@ -109,13 +105,31 @@ const stepThroughCell = (row, column) => {
 
 stepThroughCell(startRow, startColumn);
 
-console.group('GRID');
-console.table(grid);
-console.groupEnd('GRID');
+horizontals.forEach((row, rowIndex) => {
+  row.forEach((open, columnIndex) => {
+    if (open) {
+      return;
+    }
+    const wall = Bodies.rectangle(
+      columnIndex * UNIT_LENGTH + UNIT_LENGTH / 2,
+      rowIndex * UNIT_LENGTH + UNIT_LENGTH,
+      UNIT_LENGTH,
+      10,
+      {
+        isStatic: true
+      }
+    );
+    World.add(world, wall);
+  });
+});
 
-console.group('VERTICALS');
-console.table(verticals);
-console.groupEnd('VERTICALS');
+// console.group('GRID');
+// console.table(grid);
+// console.groupEnd('GRID');
+
+// console.group('VERTICALS');
+// console.table(verticals);
+// console.groupEnd('VERTICALS');
 
 console.group('HORIZONTALS');
 console.table(horizontals);
