@@ -1,4 +1,4 @@
-const { Engine, Render, Runner, World, Bodies } = Matter;
+const { Engine, Render, Runner, World, Body, Bodies } = Matter;
 
 const CELLS = 6;
 const WIDTH = 600;
@@ -154,14 +154,23 @@ World.add(world, goal);
 const ball = Bodies.circle(UNIT_LENGTH / 2, UNIT_LENGTH / 2, UNIT_LENGTH / 4);
 World.add(world, ball);
 
-// console.group('GRID');
-// console.table(grid);
-// console.groupEnd('GRID');
+document.addEventListener('keydown', event => {
+  const { x, y } = ball.velocity;
 
-console.group('VERTICALS');
-console.table(verticals);
-console.groupEnd('VERTICALS');
-
-console.group('HORIZONTALS');
-console.table(horizontals);
-console.groupEnd('HORIZONTALS');
+  // Move ball up
+  if (event.which === 87 || event.which === 38) {
+    Body.setVelocity(ball, { x, y: y - 5 });
+  }
+  // Move ball left
+  if (event.which === 65 || event.which === 37) {
+    Body.setVelocity(ball, { x: x - 5, y });
+  }
+  // Move ball right
+  if (event.which === 68 || event.which === 39) {
+    Body.setVelocity(ball, { x: x + 5, y });
+  }
+  // Move ball down
+  if (event.which === 83 || event.which === 40) {
+    Body.setVelocity(ball, { x, y: y + 5 });
+  }
+});
