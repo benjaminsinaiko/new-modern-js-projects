@@ -1,6 +1,9 @@
 document.querySelector('form').addEventListener('submit', event => {
   event.preventDefault();
 
+  document.querySelector('#message-form').classList.add('hide');
+  document.querySelector('#link-form').classList.remove('hide');
+
   const input = document.querySelector('#message-input');
   const encrypted = btoa(input.value);
 
@@ -19,8 +22,8 @@ function copyText(textToCopy) {
   document.execCommand('copy');
 
   const copiedMessage = document.querySelector('.copied');
-  copiedMessage.classList.remove('hidden');
+  copiedMessage.classList.remove('hide');
   setTimeout(() => {
-    copiedMessage.classList.add('hidden');
+    copiedMessage.classList.add('hide');
   }, 500);
 }

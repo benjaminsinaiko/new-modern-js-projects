@@ -1,0 +1,37 @@
+.row {
+  margin-top: 25vh;
+}
+
+.link-panel {
+  display: flex;
+}
+
+.copied {
+  font-size: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+  z-index: 1;
+  width: 100vw;
+  color: #ffffff;
+  animation: fadeInOut ease 0.7s;
+}
+
+.copied h3 {
+  margin: 0;
+  padding: 15px;
+  background-color: #ef535090;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
