@@ -1,3 +1,6 @@
+// Deplayed to zeit.co using 'now'
+// at https://message.benjamins.now.sh
+
 const { hash } = window.location;
 
 const message = atob(hash.replace('#', ''));
