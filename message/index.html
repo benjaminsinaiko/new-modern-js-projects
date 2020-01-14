@@ -8,9 +8,44 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
+    <style>
+      .link-txt {
+        display: flex;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .copied {
+        font-size: 64px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        position: absolute;
+        z-index: 1;
+        height: 40vh;
+        width: 100vw;
+        color: #ef535080;
+        animation: fadeInOut ease 0.7s;
+      }
+
+      @keyframes fadeInOut {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
     <title>Secret Message</title>
   </head>
   <body>
+    <div class="copied hidden">
+      <h3>copied</h3>
+    </div>
     <div class="row">
       <div class="col s8 offset-s2">
         <div class="card-panel">
@@ -23,7 +58,10 @@
 
         <div>
           Share this link with a friend
-          <input type="text" id="link-input" />
+          <div class="link-txt">
+            <input type="text" id="link-input" />
+            <a class="waves-effect waves-light btn-small red lighten-1 copy">copy</a>
+          </div>
         </div>
       </div>
     </div>
