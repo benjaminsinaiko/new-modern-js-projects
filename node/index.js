@@ -1,3 +1,11 @@
-const message = require('./myscript');
+#!/usr/bin/env node
 
-console.log(message);
+const fs = require('fs');
+
+fs.readdir(process.cwd(), (err, filenames) => {
+  if (err) {
+    console.log(err);
+  }
+
+  console.log(filenames);
+});
